@@ -1,571 +1,628 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JoyCannot — All-in-One Discord Bot</title>
-  <meta name="description" content="JoyCannot is a powerful all-in-one Discord bot with moderation, leveling, quests, giveaways, tickets, and premium features." />
-  <meta property="og:title" content="JoyCannot — All-in-One Discord Bot" />
-  <meta property="og:description" content="Moderation · Leveling · Quests · Giveaways · Tickets · Premium" />
-  <meta property="og:type" content="website" />
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- ── Replace BOTID with your actual Discord bot application ID ── -->
-  <script>
-    const BOT_ID      = "1492829266549674177";
-    const SUPPORT_URL = "https://discord.gg/sNv4gSM8HK";
-    const TOPGG_URL   = `https://joyboy-production-b52f.up.railway.app/topgg`;
-    const INVITE_URL  = `https://discord.com/oauth2/authorize?client_id=1492829266549674177&permissions=8&integration_type=0&scope=bot+applications.commands`;
-  </script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JoyCannot — Dashboard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+:root{
+  --amber:#F59E0B;--amber-glow:rgba(245,158,11,.15);
+  --bg:#08080A;--surface:#111116;--surface2:#18181F;--surface3:#1F1F28;
+  --border:rgba(255,255,255,.07);--text:#F0EEE9;--muted:#7A7884;
+  --green:#22C55E;--red:#EF4444;--blue:#3B82F6;--r:10px;
+  --fh:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:14px;display:flex;height:100vh;overflow:hidden}
+a{color:inherit;text-decoration:none}
+input,select,textarea{background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-family:var(--fb);font-size:13px;width:100%;outline:none;transition:border .2s}
+input:focus,select:focus,textarea:focus{border-color:rgba(245,158,11,.4)}
+textarea{resize:vertical;min-height:80px}
+button{cursor:pointer;border:none;font-family:var(--fh);font-size:13px;font-weight:700;border-radius:6px;padding:8px 18px;transition:all .2s}
+.btn-amber{background:var(--amber);color:#000}
+.btn-amber:hover{background:#FBBF24;box-shadow:0 0 20px rgba(245,158,11,.4)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.04)}
+.btn-red{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.25)}
+.btn-red:hover{background:rgba(239,68,68,.25)}
+.btn-green{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.25)}
+.btn-green:hover{background:rgba(34,197,94,.25)}
+.btn-sm{padding:5px 12px;font-size:12px}
+#login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;flex-direction:column}
+.login-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px;width:380px;text-align:center}
+.login-box h1{font-family:var(--fh);font-size:26px;font-weight:800;margin-bottom:6px}
+.login-box h1 span{color:var(--amber)}
+.login-box p{color:var(--muted);font-size:13px;margin-bottom:24px}
+.lrow{display:flex;gap:8px;margin-bottom:10px}
+#lerr{color:var(--red);font-size:12px;margin-top:8px;display:none}
+#app{display:none;width:100%;height:100vh;overflow:hidden;flex:1}
+.sidebar{width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto}
+.sb-logo{padding:18px 16px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.sb-logo img{width:34px;height:34px;border-radius:50%;border:2px solid var(--amber)}
+.sb-logo span{font-family:var(--fh);font-size:17px;font-weight:800}
+.sb-logo span b{color:var(--amber)}
+.sb-status{padding:9px 16px;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);flex-shrink:0}
+.dot.off{background:var(--red);box-shadow:none}
+.sb-sec{padding:14px 10px 4px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;margin:1px 6px;cursor:pointer;color:var(--muted);font-size:13px;font-weight:500;transition:all .15s;border:1px solid transparent}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:var(--amber-glow);color:var(--amber);border-color:rgba(245,158,11,.2)}
+.nav-item .ic{font-size:15px;width:20px;text-align:center}
+.sb-bot{margin-top:auto;padding:14px 16px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+.sb-bot b{color:var(--text)}
+#guild-picker{padding:10px;border-bottom:1px solid var(--border)}
+#guild-picker select{font-size:12px;padding:6px 10px}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:52px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;background:var(--surface)}
+.topbar h2{font-family:var(--fh);font-size:16px;font-weight:700}
+.topbar-r{display:flex;align-items:center;gap:10px}
+.content{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.ct{font-family:var(--fh);font-size:14px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.sc{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px}
+.sc .num{font-family:var(--fh);font-size:26px;font-weight:800}
+.sc .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.fr{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fr label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.fi{display:flex;gap:8px;align-items:flex-end}
+.fi .fr{flex:1;margin:0}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--border)}
+td{padding:10px 12px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.04)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700}
+.ba{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.bg{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.br{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.bb{background:rgba(59,130,246,.15);color:var(--blue);border:1px solid rgba(59,130,246,.2)}
+.xbo{background:var(--surface3);border-radius:99px;height:6px;overflow:hidden;width:100px}
+.xbi{height:100%;background:var(--amber);border-radius:99px}
+.toggle{position:relative;display:inline-block;width:40px;height:22px}
+.toggle input{opacity:0;width:0;height:0}
+.ts{position:absolute;inset:0;background:var(--surface3);border-radius:99px;cursor:pointer;transition:.2s}
+.ts:before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:var(--muted);border-radius:50%;transition:.2s}
+.toggle input:checked+.ts{background:var(--amber)}
+.toggle input:checked+.ts:before{transform:translateX(18px);background:#000}
+#toast{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.ti{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 18px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.4);transform:translateX(120%);transition:transform .3s;max-width:320px}
+.ti.in{transform:translateX(0)}
+.ti.success{border-left:3px solid var(--green);color:var(--green)}
+.ti.error{border-left:3px solid var(--red);color:var(--red)}
+.ti.info{border-left:3px solid var(--amber);color:var(--amber)}
+.loading{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--muted);gap:10px}
+.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--amber);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+</style>
 </head>
 <body>
 
-<!-- ──────────────────────────────────────────
-     NAVBAR
-     ────────────────────────────────────────── -->
-<nav id="navbar">
-  <div class="container">
-    <a href="#" class="nav-logo">
-      <!-- Replace src with your bot avatar URL -->
-      <img src="https://cdn.discordapp.com/embed/avatars/0.png" alt="JoyCannot" id="bot-avatar" />
-      Joy<span>Cannot</span>
-    </a>
-
-    <ul class="nav-links">
-      <li><a href="#features">Features</a></li>
-      <li><a href="#commands">Commands</a></li>
-      <li><a href="#premium">Premium</a></li>
-      <li><a href="#vote">Vote</a></li>
-    </ul>
-
-    <div class="nav-cta">
-      <a href="#" onclick="window.open(SUPPORT_URL)" class="btn btn-ghost">Support</a>
-      <a href="#" onclick="window.open(INVITE_URL)" class="btn btn-primary">Add to Server</a>
+<div id="login-screen">
+  <div class="login-box">
+    <h1>Joy<span>Cannot</span></h1>
+    <p>Enter your API key and bot URL to continue</p>
+    <div class="lrow"><input type="text" id="url-in" placeholder="https://your-bot.up.railway.app" /></div>
+    <div class="lrow">
+      <input type="password" id="key-in" placeholder="DASHBOARD_API_KEY (leave blank if none)" />
+      <button class="btn-amber" onclick="doLogin()">Login</button>
     </div>
+    <div id="lerr">❌ Cannot connect — check URL or API key</div>
   </div>
-</nav>
+</div>
 
-<!-- ──────────────────────────────────────────
-     HERO
-     ────────────────────────────────────────── -->
-<section class="hero" id="home">
-  <div class="container">
-    <div class="hero-grid">
-
-      <!-- Left: text -->
-      <div class="hero-text">
-        <div class="tag">✨ All-in-One Discord Bot</div>
-        <h1 class="hero-title anim">
-          Your Server's<br/>
-          <span class="accent">Backbone</span>
-          <span class="line2">Done Right.</span>
-        </h1>
-        <p class="hero-desc anim anim-d1">
-          Moderation, leveling, tickets, quests, giveaways & premium — everything your server needs in one powerful bot. Zero bloat, pure performance.
-        </p>
-        <div class="hero-buttons anim anim-d2">
-          <a href="#" onclick="window.open(INVITE_URL)" class="btn btn-primary btn-invite">
-            🚀 Add to Discord
-          </a>
-          <a href="#features" class="btn btn-ghost">See Features</a>
-        </div>
-        <div class="hero-stats anim anim-d3">
-          <div class="stat">
-            <span class="stat-num" id="stat-guilds">—</span>
-            <span class="stat-label">Servers</span>
-          </div>
-          <div class="stat">
-            <span class="stat-num">8</span>
-            <span class="stat-label">Languages</span>
-          </div>
-          <div class="stat">
-            <span class="stat-num">30+</span>
-            <span class="stat-label">Commands</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right: bot card -->
-      <div class="hero-card anim anim-d2">
-        <img class="card-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Bot" id="card-avatar" />
-        <div class="card-name">JoyCannot</div>
-        <div class="card-status">
-          <span class="dot-online"></span>
-          Online &amp; Ready
-        </div>
-        <div class="card-features">
-          <div class="card-feature"><span class="icon">🛡️</span> Advanced Moderation</div>
-          <div class="card-feature"><span class="icon">⭐</span> XP Leveling System</div>
-          <div class="card-feature"><span class="icon">📋</span> Quest System</div>
-          <div class="card-feature"><span class="icon">🎊</span> Giveaway Manager</div>
-          <div class="card-feature"><span class="icon">🎫</span> Ticket Support</div>
-          <div class="card-feature"><span class="icon">💎</span> Premium Features</div>
-        </div>
-
-        <!-- Floating badges -->
-        <div class="badge-float badge-1">
-          <span class="badge-amber">⬆️</span> @user reached Level 5!
-        </div>
-        <div class="badge-float badge-2">
-          <span class="badge-amber">🎊</span> Giveaway started!
-        </div>
-      </div>
-
+<div id="app" style="display:none;flex:1;display:flex">
+  <div class="sidebar">
+    <div class="sb-logo">
+      <img id="sb-av" src="https://cdn.discordapp.com/embed/avatars/0.png"/>
+      <span>Joy<b>Cannot</b></span>
     </div>
+    <div class="sb-status"><span class="dot" id="sb-dot"></span><span id="sb-st">Connecting...</span></div>
+    <div id="guild-picker">
+      <select id="gs" onchange="selectGuild(this.value)"><option value="">— Select server —</option></select>
+    </div>
+    <div class="sb-sec">Overview</div>
+    <div class="nav-item active" onclick="goto('overview',this)"><span class="ic">📊</span>Overview</div>
+    <div class="sb-sec">Premium</div>
+    <div class="nav-item" onclick="goto('premium',this)"><span class="ic">💎</span>Premium Manager</div>
+    <div class="nav-item" onclick="goto('payment',this)"><span class="ic">💳</span>Payment Methods</div>
+    <div class="sb-sec">Server</div>
+    <div class="nav-item" onclick="goto('leveling',this)"><span class="ic">⭐</span>Leveling</div>
+    <div class="nav-item" onclick="goto('quests',this)"><span class="ic">📋</span>Quests</div>
+    <div class="nav-item" onclick="goto('tickets',this)"><span class="ic">🎫</span>Tickets</div>
+    <div class="nav-item" onclick="goto('giveaways',this)"><span class="ic">🎊</span>Giveaways</div>
+    <div class="sb-sec">Global</div>
+    <div class="nav-item" onclick="goto('broadcast',this)"><span class="ic">📢</span>Broadcast</div>
+    <div class="nav-item" onclick="goto('settings',this)"><span class="ic">⚙️</span>Settings</div>
+    <div class="sb-bot">Bot: <b id="sb-nm">—</b><br/>Ping: <b id="sb-ms">—</b>ms</div>
   </div>
-</section>
 
-<div class="section-divider"></div>
-
-<!-- ──────────────────────────────────────────
-     FEATURES
-     ────────────────────────────────────────── -->
-<section class="section" id="features">
-  <div class="container">
-    <div class="features-header">
-      <span class="section-label">Everything you need</span>
-      <h2 class="section-title anim">Packed with features.<br/>Ready out of the box.</h2>
-      <p class="section-sub anim anim-d1">Everything from moderation to premium monetization — one bot, zero headaches.</p>
+  <div class="main">
+    <div class="topbar">
+      <h2 id="pt">Overview</h2>
+      <div class="topbar-r">
+        <span style="font-size:12px;color:var(--muted)" id="gl">No server selected</span>
+        <button class="btn-ghost btn-sm" onclick="refreshAll()">🔄 Refresh</button>
+        <button class="btn-red btn-sm" onclick="logout()">Logout</button>
+      </div>
     </div>
-
-    <div class="features-grid">
-
-      <div class="feature-card anim anim-d1">
-        <div class="feature-icon">🛡️</div>
-        <h3>Advanced Moderation</h3>
-        <p>Kick, ban, timeout, warn with reason logging. Auto-ban cross-channel spammers — detects text, images, links and invite spam instantly before they cause damage.</p>
-        <span class="feature-badge">🔒 Anti-Spam</span>
-      </div>
-
-      <div class="feature-card anim anim-d2">
-        <div class="feature-icon">⭐</div>
-        <h3>XP Leveling System</h3>
-        <p>Arcane-style rank cards with progress bars, server leaderboard, configurable XP per message, cooldowns, and automatic role rewards for reaching levels.</p>
-        <span class="feature-badge">📊 Leaderboard</span>
-      </div>
-
-      <div class="feature-card anim anim-d3">
-        <div class="feature-icon">📋</div>
-        <h3>Quest System</h3>
-        <p>Custom per-server quests with hidden rewards. Text rewards shown only via ephemeral claim — "Only you can see this". XP rewards added silently on completion.</p>
-        <span class="feature-badge">🎁 Secret Rewards</span>
-      </div>
-
-      <div class="feature-card anim anim-d1">
-        <div class="feature-icon">🎊</div>
-        <h3>Giveaway Manager</h3>
-        <p>Professional giveaways with 🎉 reaction entry, auto-timing, force-end, reroll, role requirements, min-level gate, and custom descriptions.</p>
-        <span class="feature-badge">🏆 Auto-Winner</span>
-      </div>
-
-      <div class="feature-card anim anim-d2">
-        <div class="feature-icon">🎫</div>
-        <h3>Ticket System</h3>
-        <p>One-click ticket panels, support role auto-access, close reason (required), max-ticket limit per user, full audit log with timestamps and reasons.</p>
-        <span class="feature-badge">📋 Audit Log</span>
-      </div>
-
-      <div class="feature-card anim anim-d3">
-        <div class="feature-icon">📅</div>
-        <h3>Live Event System</h3>
-        <p>Schedule events with live countdown embeds. Auto-updates to 🟢 LIVE then 🔴 ENDED. 5-minute reminder ping before events start.</p>
-        <span class="feature-badge">⏳ Auto-Update</span>
-      </div>
-
-      <div class="feature-card anim anim-d1">
-        <div class="feature-icon">💎</div>
-        <h3>Premium System</h3>
-        <p>Built-in monetization. QRIS, bank transfer, e-wallet payment. Buyers submit proof screenshot via DM — bot forwards to owner with Server ID for instant activation.</p>
-        <span class="feature-badge">💳 Payment Proof</span>
-      </div>
-
-      <div class="feature-card anim anim-d2">
-        <div class="feature-icon">🗳️</div>
-        <h3>Vote & Rewards</h3>
-        <p>top.gg integration via webhook. Voters get automatic discount on premium orders. Configurable discount %, applied seamlessly on next order.</p>
-        <span class="feature-badge">🎯 Auto-Discount</span>
-      </div>
-
-      <div class="feature-card anim anim-d3">
-        <div class="feature-icon">🌐</div>
-        <h3>Multi-Language</h3>
-        <p>8 languages supported per-server: English, Indonesian, German, Arabic, Thai, Vietnamese, Japanese, Korean. Switch with one command.</p>
-        <span class="feature-badge">🇮🇩 8 Languages</span>
-      </div>
-
-    </div>
+    <div class="content" id="content"><div class="loading"><div class="spinner"></div>Loading...</div></div>
   </div>
-</section>
+</div>
 
-<div class="section-divider"></div>
+<div id="toast"></div>
 
-<!-- ──────────────────────────────────────────
-     COMMANDS SHOWCASE
-     ────────────────────────────────────────── -->
-<section class="section commands-section" id="commands">
-  <div class="container">
-    <div class="commands-inner">
-
-      <!-- Left: description -->
-      <div>
-        <span class="section-label">Slash &amp; Prefix</span>
-        <h2 class="section-title anim">Every command,<br/>two ways.</h2>
-        <p class="section-sub anim anim-d1" style="margin-bottom:32px;">
-          All commands work as both <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:13px;">/slash</code> and <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:13px;">!Joy prefix</code> — with full autocomplete, parameter hints, and premium labels.
-        </p>
-        <div class="commands-list" id="cmd-list">
-          <div class="cmd-item active" data-cmd="rank" onclick="showCmd('rank', this)">
-            <span class="cmd-name">/rank</span>
-            <span class="cmd-desc">View XP rank card with progress bar</span>
-          </div>
-          <div class="cmd-item" data-cmd="levelup" onclick="showCmd('levelup', this)">
-            <span class="cmd-name">/level setchannel</span>
-            <span class="cmd-desc">Set level-up notification channel</span>
-          </div>
-          <div class="cmd-item" data-cmd="quest" onclick="showCmd('quest', this)">
-            <span class="cmd-name">/quest list</span>
-            <span class="cmd-desc">View quests & hidden rewards</span>
-          </div>
-          <div class="cmd-item" data-cmd="giveaway" onclick="showCmd('giveaway', this)">
-            <span class="cmd-name">/giveaway start</span>
-            <span class="cmd-desc">Launch a giveaway with 🎉 entries</span>
-          </div>
-          <div class="cmd-item" data-cmd="ticket" onclick="showCmd('ticket', this)">
-            <span class="cmd-name">/ticket setup</span>
-            <span class="cmd-desc">Configure ticket system</span>
-          </div>
-          <div class="cmd-item" data-cmd="premium" onclick="showCmd('premium', this)">
-            <span class="cmd-name">/premium info</span>
-            <span class="cmd-desc">View packages &amp; payment methods</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right: live preview -->
-      <div class="cmd-preview anim anim-d2">
-        <div class="cmd-preview-header">Live Preview</div>
-        <div id="preview-content">
-          <!-- rank default -->
-          <div class="discord-msg">
-            <div class="discord-avatar">🤖</div>
-            <div class="discord-content">
-              <div class="discord-name">JoyCannot <span>Today at 03:14 AM</span></div>
-              <div class="discord-embed">
-                <div class="embed-title">📊 Rank Card</div>
-                <div class="embed-body">
-                  <strong>@YourUsername</strong><br/><br/>
-                  <span style="color:#7A7884;font-size:12px;">Level: <strong style="color:#F0EEE9">7</strong> &nbsp;·&nbsp; XP: <strong style="color:#F0EEE9">1,204 / 1,575</strong> &nbsp;·&nbsp; Rank: <strong style="color:#F0EEE9">#3</strong></span>
-                  <br/><br/>
-                  <div class="xp-bar">▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱ 76%</div>
-                  <br/>
-                  <span style="color:#7A7884;font-size:11px;">Total XP: 8,954 &nbsp;·&nbsp; Messages: 1,204</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- ──────────────────────────────────────────
-     PREMIUM
-     ────────────────────────────────────────── -->
-<section class="section premium-section" id="premium">
-  <div class="container">
-    <div class="premium-inner">
-
-      <div>
-        <span class="section-label">Premium</span>
-        <h2 class="section-title anim">Unlock the full<br/>experience.</h2>
-        <p class="section-sub anim anim-d1" style="margin-bottom:36px;">
-          Premium activates exclusive features server-wide. Bot nickname changes to <strong style="color:var(--amber)">JoyCannot Premium</strong> with a golden role color.
-        </p>
-        <ul class="premium-perks">
-          <li><span class="perk-icon">✅</span> Access to all premium-locked commands</li>
-          <li><span class="perk-icon">✅</span> Bot nickname → <strong style="color:var(--amber)">JoyCannot Premium</strong></li>
-          <li><span class="perk-icon">✅</span> Gold colored role (server-wide)</li>
-          <li><span class="perk-icon">✅</span> Priority support via ticket system</li>
-          <li><span class="perk-icon">✅</span> Custom XP multiplier settings</li>
-          <li><span class="perk-icon">✅</span> Vote discount stackable</li>
-        </ul>
-        <br/>
-        <a href="#" onclick="window.open(SUPPORT_URL)" class="btn btn-primary" style="margin-top:8px;">
-          💎 Order Premium
-        </a>
-      </div>
-
-      <div class="premium-cards anim anim-d2">
-        <div class="premium-card">
-          <div class="pkg-info">
-            <h4>🥉 Bronze</h4>
-            <span>3 days · Basic</span>
-          </div>
-          <div class="pkg-price">
-            <div class="price">Rp 8.599</div>
-            <span class="dur">one-time</span>
-          </div>
-        </div>
-        <div class="premium-card">
-          <div class="pkg-info">
-            <h4>🥇 Gold</h4>
-            <span>7 days · Basic</span>
-          </div>
-          <div class="pkg-price">
-            <div class="price">Rp 14.800</div>
-            <span class="dur">one-time</span>
-          </div>
-        </div>
-        <div class="premium-card featured">
-          <div class="pkg-info">
-            <h4>💎 Diamond</h4>
-            <span>25 days · Premium</span>
-          </div>
-          <div class="pkg-price">
-            <div class="price">Rp 34.200</div>
-            <span class="dur">one-time</span>
-          </div>
-        </div>
-        <div class="premium-card">
-          <div class="pkg-info">
-            <h4>🔮 Crystal</h4>
-            <span>30 days · VIP</span>
-          </div>
-          <div class="pkg-price">
-            <div class="price">Rp 48.200</div>
-            <span class="dur">one-time</span>
-          </div>
-        </div>
-        <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px;">
-          💳 QRIS · Bank Transfer · E-Wallet &nbsp;|&nbsp; Payment proof via DM
-        </p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- ──────────────────────────────────────────
-     VOTE
-     ────────────────────────────────────────── -->
-<section class="vote-section" id="vote">
-  <div class="container">
-    <div class="tag" style="margin:0 auto 20px;">🗳️ Free Reward</div>
-    <h2 class="anim">Vote. Get Rewarded.</h2>
-    <p class="anim anim-d1">Vote for JoyCannot on top.gg and get an exclusive discount on your next premium order — automatically applied, no codes needed.</p>
-
-    <div class="vote-perks anim anim-d2">
-      <div class="vote-perk">
-        <span class="vote-perk-icon">🎁</span>
-        <span class="vote-perk-text">Discount on Premium</span>
-      </div>
-      <div class="vote-perk">
-        <span class="vote-perk-icon">⭐</span>
-        <span class="vote-perk-text">XP Boost</span>
-      </div>
-      <div class="vote-perk">
-        <span class="vote-perk-icon">⚡</span>
-        <span class="vote-perk-text">Instant via Webhook</span>
-      </div>
-      <div class="vote-perk">
-        <span class="vote-perk-icon">🔁</span>
-        <span class="vote-perk-text">Every 12 Hours</span>
-      </div>
-    </div>
-
-    <a href="#" onclick="window.open(TOPGG_URL)" class="btn btn-primary anim anim-d3" style="padding:14px 40px;font-size:16px;">
-      🗳️ Vote on top.gg
-    </a>
-  </div>
-</section>
-
-<!-- ──────────────────────────────────────────
-     FOOTER
-     ────────────────────────────────────────── -->
-<footer>
-  <div class="container">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <h3>Joy<span>Cannot</span></h3>
-        <p>A sleek, multi-purpose Discord bot built for serious servers. Professional. Lightweight. Built different.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Bot</h4>
-        <ul>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#commands">Commands</a></li>
-          <li><a href="#premium">Premium</a></li>
-          <li><a href="#vote">Vote</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Links</h4>
-        <ul>
-          <li><a href="#" onclick="window.open(INVITE_URL)">Invite Bot</a></li>
-          <li><a href="#" onclick="window.open(SUPPORT_URL)">Support Server</a></li>
-          <li><a href="#" onclick="window.open(TOPGG_URL)">top.gg</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Support</h4>
-        <ul>
-          <li><a href="#" onclick="window.open(SUPPORT_URL)">Discord Server</a></li>
-          <li><a href="#premium">Order Premium</a></li>
-          <li><a href="#vote">Vote &amp; Earn</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 <span class="amber">JoyCannot</span>. Made with ❤️ for Discord communities.</span>
-      <span>Prefix: <code style="color:var(--amber)">!Joy</code> &nbsp;·&nbsp; Slash: <code style="color:var(--amber)">/</code></span>
-    </div>
-  </div>
-</footer>
-
-<!-- ──────────────────────────────────────────
-     JAVASCRIPT
-     ────────────────────────────────────────── -->
 <script>
-/* ── Intersection Observer for scroll animations ── */
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.12 });
-document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+let URL_BASE="",API_KEY="";
+let S={status:null,guilds:[],guild:null,gdata:null,pm:null};
+let PAGE="overview";
 
-/* ── Navbar scroll shadow ── */
-window.addEventListener('scroll', () => {
-  document.getElementById('navbar').style.background =
-    window.scrollY > 30 ? 'rgba(10,10,12,0.95)' : 'rgba(10,10,12,0.7)';
-});
-
-/* ── Command preview switcher ── */
-const previews = {
-  rank: `
-    <div class="discord-msg">
-      <div class="discord-avatar">🤖</div>
-      <div class="discord-content">
-        <div class="discord-name">JoyCannot <span>Today at 03:14 AM</span></div>
-        <div class="discord-embed">
-          <div class="embed-title">📊 Rank Card</div>
-          <div class="embed-body">
-            <strong>@YourUsername</strong><br/><br/>
-            <span style="color:#7A7884;font-size:12px;">Level: <strong style="color:#F0EEE9">7</strong> &nbsp;·&nbsp; XP: <strong style="color:#F0EEE9">1,204 / 1,575</strong> &nbsp;·&nbsp; Rank: <strong style="color:#F0EEE9">#3</strong></span>
-            <br/><br/>
-            <div class="xp-bar">▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱ 76%</div>
-          </div>
-        </div>
-      </div>
-    </div>`,
-  levelup: `
-    <div class="discord-msg">
-      <div class="discord-avatar">🤖</div>
-      <div class="discord-content">
-        <div class="discord-name">JoyCannot <span>Today at 11:22 PM</span></div>
-        <div class="discord-embed">
-          <div class="embed-title">⬆️ Level Up!</div>
-          <div class="embed-body">
-            @ZoesaC24<br/><br/>
-            <span style="color:#7A7884;font-size:12px;">Level: <strong style="color:#F0EEE9">6</strong> &nbsp;·&nbsp; XP: <strong style="color:#F0EEE9">0 / 880</strong> &nbsp;·&nbsp; Rank: <strong style="color:#F0EEE9">#4</strong></span>
-            <br/><br/>
-            <div class="xp-bar">▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱ 0%</div>
-            <br/>
-            <span style="font-size:11px;color:#7A7884;">Vote Booster: Vote now for a 10% XP boost.</span>
-          </div>
-        </div>
-      </div>
-    </div>`,
-  quest: `
-    <div class="discord-msg">
-      <div class="discord-avatar">🤖</div>
-      <div class="discord-content">
-        <div class="discord-name">JoyCannot <span>Today at 02:58 AM</span></div>
-        <div class="discord-embed">
-          <div class="embed-title">📋 Active Quests</div>
-          <div class="embed-body">
-            <strong>🔶 Code Redeem</strong><br/>
-            Selesaikan quest untuk mendapatkan hadiah<br/>
-            <div class="xp-bar" style="font-size:12px;">▰▰▰▰▱▱▱▱ 1/2</div>
-            🎁 <strong>Reward:</strong> 🔒 <em style="color:#7A7884">Complete quest to reveal</em>
-          </div>
-        </div>
-      </div>
-    </div>`,
-  giveaway: `
-    <div class="discord-msg">
-      <div class="discord-avatar">🤖</div>
-      <div class="discord-content">
-        <div class="discord-name">JoyCannot <span>Today at 08:00 PM</span></div>
-        <div class="discord-embed" style="border-color:#F59E0B">
-          <div class="embed-title">🎊 GIVEAWAY 🎊</div>
-          <div class="embed-body">
-            <strong>Steam Gift Card $10</strong><br/><br/>
-            React with 🎉 to enter!<br/><br/>
-            ⏰ <strong>Ends:</strong> in 24 hours<br/>
-            👥 <strong>Winners:</strong> 1<br/>
-            🎭 <strong>Requirements:</strong> Min Level 5
-          </div>
-        </div>
-      </div>
-    </div>`,
-  ticket: `
-    <div class="discord-msg">
-      <div class="discord-avatar">🤖</div>
-      <div class="discord-content">
-        <div class="discord-name">JoyCannot <span>Today at 04:11 PM</span></div>
-        <div class="discord-embed">
-          <div class="embed-title">✅ Ticket System Configured</div>
-          <div class="embed-body">
-            Ticket system has been set up successfully!<br/><br/>
-            📁 <strong>Category:</strong> Support Tickets<br/>
-            📋 <strong>Log:</strong> #ticket-logs<br/>
-            🎭 <strong>Support Role:</strong> @Staff<br/>
-            🎫 <strong>Max Tickets:</strong> 1 per user
-          </div>
-        </div>
-      </div>
-    </div>`,
-  premium: `
-    <div class="discord-msg">
-      <div class="discord-avatar">🤖</div>
-      <div class="discord-content">
-        <div class="discord-name">JoyCannot <span>Today at 10:59 AM</span></div>
-        <div class="discord-embed">
-          <div class="embed-title">💎 JoyCannot Premium</div>
-          <div class="embed-body">
-            Upgrade your server!<br/><br/>
-            ⭐ <strong>Bronze</strong> — 3d · basic · Rp 8.599<br/>
-            💎 <strong>Gold</strong> — 7d · basic · Rp 14.800<br/>
-            ✨ <strong>Crystal</strong> — 30d · vip · Rp 48.200<br/><br/>
-            ✅ <strong>QRIS</strong> — Scan & Done<br/>
-            ✅ <strong>Bank</strong> — BCA · 2040555873
-          </div>
-        </div>
-      </div>
-    </div>`,
-};
-
-function showCmd(key, el) {
-  document.querySelectorAll('.cmd-item').forEach(i => i.classList.remove('active'));
-  el.classList.add('active');
-  const c = document.getElementById('preview-content');
-  c.style.opacity = '0';
-  setTimeout(() => { c.innerHTML = previews[key]; c.style.opacity = '1'; c.style.transition = 'opacity .25s'; }, 150);
+async function api(m,p,b=null){
+  const o={method:m,headers:{"Authorization":"Bearer "+API_KEY,"Content-Type":"application/json"}};
+  if(b)o.body=JSON.stringify(b);
+  const r=await fetch(URL_BASE+p,o);
+  if(!r.ok){const t=await r.text();throw new Error(t||"HTTP "+r.status);}
+  return r.json();
 }
 
-/* ── Smooth invite button links ── */
-document.querySelectorAll('.btn-invite, [onclick*="INVITE_URL"]').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.preventDefault();
-    window.open(INVITE_URL, '_blank');
-  });
-});
-</script>
+function toast(type,msg){
+  const t=document.getElementById("toast");
+  const el=document.createElement("div");
+  el.className="ti "+type; el.textContent=msg; t.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add("in"));
+  setTimeout(()=>{el.classList.remove("in");setTimeout(()=>el.remove(),300);},3500);
+}
 
+async function doLogin(){
+  const url=document.getElementById("url-in").value.trim().replace(/\/$/,"");
+  const key=document.getElementById("key-in").value.trim();
+  URL_BASE=url; API_KEY=key;
+  if(!url){document.getElementById("lerr").style.display="block";return;}
+  try{
+    S.status=await api("GET","/api/status");
+    document.getElementById("login-screen").style.display="none";
+    document.getElementById("app").style.display="flex";
+    await init();
+  }catch(e){document.getElementById("lerr").style.display="block";}
+}
+
+function logout(){URL_BASE="";API_KEY="";location.reload();}
+
+async function init(){
+  updateSb();
+  S.guilds=await api("GET","/api/guilds")||[];
+  const sel=document.getElementById("gs");
+  sel.innerHTML='<option value="">— Select server —</option>';
+  S.guilds.forEach(g=>{sel.innerHTML+=`<option value="${g.id}">${g.name}${g.premium?" 💎":""}</option>`;});
+  S.pm=await api("GET","/api/premium");
+  render(PAGE);
+  setInterval(async()=>{try{S.status=await api("GET","/api/status");updateSb();}catch(e){}},30000);
+}
+
+function updateSb(){
+  const s=S.status||{};
+  document.getElementById("sb-av").src=s.avatar_url||"https://cdn.discordapp.com/embed/avatars/0.png";
+  document.getElementById("sb-nm").textContent=s.username||"—";
+  document.getElementById("sb-ms").textContent=s.latency_ms??"—";
+  document.getElementById("sb-dot").className="dot"+(s.online?"":" off");
+  document.getElementById("sb-st").textContent=s.online?`Online · ${s.guild_count} servers`:"Offline";
+}
+
+async function selectGuild(id){
+  if(!id){S.guild=null;S.gdata=null;document.getElementById("gl").textContent="No server selected";return;}
+  document.getElementById("content").innerHTML='<div class="loading"><div class="spinner"></div>Loading server data...</div>';
+  S.gdata=await api("GET",`/api/guild/${id}`);
+  S.guild=id;
+  document.getElementById("gl").textContent=S.gdata?.name||id;
+  render(PAGE);
+}
+
+async function refreshAll(){
+  S.status=await api("GET","/api/status");
+  S.pm=await api("GET","/api/premium");
+  S.guilds=await api("GET","/api/guilds");
+  if(S.guild)S.gdata=await api("GET",`/api/guild/${S.guild}`);
+  updateSb(); render(PAGE); toast("info","Refreshed ✓");
+}
+
+function goto(page,el){
+  document.querySelectorAll(".nav-item").forEach(i=>i.classList.remove("active"));
+  el.classList.add("active");
+  const t={overview:"Overview",premium:"Premium Manager",payment:"Payment Methods",leveling:"Leveling",
+    quests:"Quests",tickets:"Tickets",giveaways:"Giveaways",broadcast:"Broadcast",settings:"Settings"};
+  document.getElementById("pt").textContent=t[page]||page;
+  PAGE=page; render(page);
+}
+
+function render(p){
+  const c=document.getElementById("content");
+  const pages={
+    overview:rOverview, premium:rPremium, payment:rPayment,
+    leveling:rLeveling, quests:rQuests, tickets:rTickets,
+    giveaways:rGiveaways, broadcast:rBroadcast, settings:rSettings,
+  };
+  c.innerHTML=(pages[p]||()=>"<p>Unknown page</p>")();
+}
+
+function noG(){return`<div class="card"><div class="ct">💡 Select a server from the sidebar first</div></div>`;}
+function esc(s){if(!s&&s!==0)return"";return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function v(id){const e=document.getElementById(id);return e?e.value.trim():"";}
+
+function chOpts(channels,selected){
+  return`<option value="">None</option>`+channels.map(c=>`<option value="${c.id}"${selected==c.id?" selected":""}>#${esc(c.name)}</option>`).join("");
+}
+
+// ── OVERVIEW ────────────────────────────────────────────────────────────
+function rOverview(){
+  const s=S.status||{},pm=S.pm||{};
+  const g=S.gdata;
+  let lb="";
+  if(g){
+    const rows=(g.leaderboard||[]).map((m,i)=>{
+      const nx=5*Math.pow(m.level,2)+50*m.level+100;
+      const pct=Math.min(100,Math.round((m.xp%nx)/nx*100));
+      return`<tr><td><b>${i+1}</b></td><td>${esc(m.name)}</td><td><span class="badge ba">Lv.${m.level}</span></td>
+      <td>${m.xp.toLocaleString()}</td><td><div class="xbo"><div class="xbi" style="width:${pct}%"></div></div></td></tr>`;
+    }).join("")||`<tr><td colspan="5" style="text-align:center;color:var(--muted)">No XP data yet</td></tr>`;
+    lb=`<div class="card"><div class="ct">🏆 Leaderboard — ${esc(g.name)}</div>
+    <table><tr><th>#</th><th>Member</th><th>Level</th><th>XP</th><th>Progress</th></tr>${rows}</table></div>`;
+  }
+  return`<div class="g3">
+    <div class="sc"><div class="num">${s.guild_count??0}</div><div class="lbl">Servers</div></div>
+    <div class="sc"><div class="num" style="color:var(--amber)">${s.premium_guilds??0}</div><div class="lbl">Premium Servers</div></div>
+    <div class="sc"><div class="num">${s.latency_ms??0}ms</div><div class="lbl">Latency</div></div>
+  </div>
+  ${g?`<div class="g3">
+    <div class="sc"><div class="num">${g.member_count}</div><div class="lbl">Members</div></div>
+    <div class="sc"><div class="num" style="color:var(--green)">${g.active_tickets}</div><div class="lbl">Open Tickets</div></div>
+    <div class="sc"><div class="num">${(g.quests||[]).length}</div><div class="lbl">Quests</div></div>
+  </div>`:''}${lb}`;
+}
+
+// ── PREMIUM ──────────────────────────────────────────────────────────────
+function rPremium(){
+  const pm=S.pm||{};
+  const pkgs=pm.packages||[],pg=pm.premium_guilds||[],pu=pm.premium_users||[],pc=pm.premium_commands||[];
+  const pkgR=pkgs.map(p=>`<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.duration)}</td>
+    <td>${esc(p.type)}</td><td style="color:var(--amber)">${esc(p.price)}</td>
+    <td><button class="btn-red btn-sm" onclick="rmPkg('${esc(p.name)}')">Remove</button></td></tr>`)
+    .join("")||`<tr><td colspan="5" style="text-align:center;color:var(--muted)">No packages yet</td></tr>`;
+  const pgR=pg.map(g=>`<tr><td><b>${esc(g.name)}</b></td><td style="color:var(--muted);font-size:11px">${g.id}</td>
+    <td><span class="badge ba">💎 Active</span></td>
+    <td><button class="btn-red btn-sm" onclick="deactGuild('${g.id}','${esc(g.name)}')">Deactivate</button></td></tr>`)
+    .join("")||`<tr><td colspan="4" style="text-align:center;color:var(--muted)">No premium guilds</td></tr>`;
+  const puL=pu.map(u=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--surface2);border-radius:6px;margin-bottom:6px">
+    <code style="color:var(--amber)">${u}</code><button class="btn-red btn-sm" onclick="rmUser('${u}')">Remove</button></div>`)
+    .join("")||`<p style="color:var(--muted);font-size:12px">No premium users</p>`;
+  const pcL=pc.map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--surface2);border-radius:6px;margin-bottom:6px">
+    <code style="color:var(--amber)">/${c}</code><button class="btn-red btn-sm" onclick="unlkCmd('${c}')">Unlock</button></div>`)
+    .join("")||`<p style="color:var(--muted);font-size:12px">No locked commands</p>`;
+  return`<div class="g2">
+    <div class="card"><div class="ct">📦 Packages</div>
+      <table><tr><th>Name</th><th>Duration</th><th>Type</th><th>Price</th><th></th></tr>${pkgR}</table>
+      <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px">
+        <div style="font-family:var(--fh);font-size:13px;font-weight:700;margin-bottom:12px">➕ Add Package</div>
+        <div class="g2" style="gap:8px">
+          <div class="fr"><label>Name</label><input id="pk-n" placeholder="e.g. Gold"/></div>
+          <div class="fr"><label>Duration</label><input id="pk-d" placeholder="e.g. 7 days"/></div>
+          <div class="fr"><label>Type</label><select id="pk-t"><option>basic</option><option>premium</option><option>vip</option></select></div>
+          <div class="fr"><label>Price</label><input id="pk-p" placeholder="e.g. Rp 14.800"/></div>
+        </div>
+        <button class="btn-amber" style="width:100%;margin-top:4px" onclick="addPkg()">Add Package</button>
+      </div>
+    </div>
+    <div class="card"><div class="ct">🏠 Premium Guilds</div>
+      <table><tr><th>Server</th><th>ID</th><th>Status</th><th></th></tr>${pgR}</table>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <input id="act-gid" placeholder="Server ID to activate" style="flex:1"/>
+        <button class="btn-green btn-sm" onclick="actGuild()">Activate</button>
+      </div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="ct">👑 Premium Users</div>${puL}
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <input id="pu-id" placeholder="Discord User ID" style="flex:1"/>
+        <button class="btn-green btn-sm" onclick="addUser()">Add</button>
+      </div>
+    </div>
+    <div class="card"><div class="ct">🔒 Premium Commands</div>${pcL}
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <input id="lk-cmd" placeholder="e.g. kick or ticket setup" style="flex:1"/>
+        <button class="btn-amber btn-sm" onclick="lkCmd()">Lock</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── PAYMENT ──────────────────────────────────────────────────────────────
+function rPayment(){
+  const pm=(S.pm||{}).payment_methods||{};
+  const q=pm.qris||{},b=pm.bank||{},e=pm.ewallet||{};
+  return`<div class="g3">
+    <div class="card"><div class="ct">📷 QRIS</div>
+      <div class="fr"><label>Enabled</label><label class="toggle"><input type="checkbox" id="q-en" ${q.enabled?"checked":""}><span class="ts"></span></label></div>
+      <div class="fr"><label>Image URL</label><input id="q-url" value="${esc(q.image_url||'')}"/></div>
+      <div class="fr"><label>Info</label><input id="q-info" value="${esc(q.info||'')}"/></div>
+      <button class="btn-amber" style="width:100%;margin-top:8px" onclick="savePay('qris')">Save</button>
+    </div>
+    <div class="card"><div class="ct">🏦 Bank Transfer</div>
+      <div class="fr"><label>Enabled</label><label class="toggle"><input type="checkbox" id="b-en" ${b.enabled?"checked":""}><span class="ts"></span></label></div>
+      <div class="fr"><label>Nama Bank</label><input id="b-nm" value="${esc(b.bank_name||'')}"/></div>
+      <div class="fr"><label>No. Rekening</label><input id="b-no" value="${esc(b.account_number||'')}"/></div>
+      <div class="fr"><label>Atas Nama</label><input id="b-an" value="${esc(b.account_name||'')}"/></div>
+      <button class="btn-amber" style="width:100%;margin-top:8px" onclick="savePay('bank')">Save</button>
+    </div>
+    <div class="card"><div class="ct">📱 E-Wallet</div>
+      <div class="fr"><label>Enabled</label><label class="toggle"><input type="checkbox" id="e-en" ${e.enabled?"checked":""}><span class="ts"></span></label></div>
+      <div class="fr"><label>Tipe</label><input id="e-ty" value="${esc(e.type||'')}" placeholder="GoPay / OVO / Dana"/></div>
+      <div class="fr"><label>Nomor</label><input id="e-nm" value="${esc(e.number||'')}"/></div>
+      <button class="btn-amber" style="width:100%;margin-top:8px" onclick="savePay('ewallet')">Save</button>
+    </div>
+  </div>`;
+}
+
+// ── LEVELING ──────────────────────────────────────────────────────────────
+function rLeveling(){
+  if(!S.gdata)return noG();
+  const gc=S.gdata.config,ch=S.gdata.channels.filter(c=>c.type==="text"),r=S.gdata.roles;
+  const lrR=Object.entries(gc.level_roles||{}).map(([lv,rid])=>{
+    const role=r.find(x=>x.id===rid);
+    return`<tr><td>Level ${lv}</td><td>${role?role.name:rid}</td>
+    <td><button class="btn-red btn-sm" onclick="rmLR('${lv}')">Remove</button></td></tr>`;
+  }).join("")||`<tr><td colspan="3" style="text-align:center;color:var(--muted)">No role rewards</td></tr>`;
+  const lbR=(S.gdata.leaderboard||[]).map((m,i)=>{
+    const nx=5*Math.pow(m.level,2)+50*m.level+100;
+    const pct=Math.min(100,Math.round((m.xp%nx)/nx*100));
+    return`<tr><td><b>${i+1}</b></td><td>${esc(m.name)}</td><td><span class="badge ba">Lv.${m.level}</span></td>
+    <td>${m.xp.toLocaleString()}</td><td>${(m.messages||0).toLocaleString()}</td>
+    <td><div class="xbo"><div class="xbi" style="width:${pct}%"></div></div></td></tr>`;
+  }).join("")||`<tr><td colspan="6" style="text-align:center;color:var(--muted)">No data yet</td></tr>`;
+  return`<div class="card"><div class="ct">⭐ Leveling Settings</div>
+    <div class="g2">
+      <div class="fr"><label>System Enabled</label><div style="display:flex;align-items:center;gap:10px;margin-top:4px"><label class="toggle"><input type="checkbox" id="lv-en" ${gc.leveling_enabled?"checked":""}><span class="ts"></span></label><span style="font-size:12px;color:var(--muted)">On/Off</span></div></div>
+      <div class="fr"><label>XP Cooldown (sec)</label><input type="number" id="lv-cd" value="${gc.xp_cooldown}" min="10" max="300"/></div>
+      <div class="fr"><label>Min XP / message</label><input type="number" id="lv-xn" value="${gc.xp_per_message[0]}" min="1" max="100"/></div>
+      <div class="fr"><label>Max XP / message</label><input type="number" id="lv-xx" value="${gc.xp_per_message[1]}" min="1" max="100"/></div>
+      <div class="fr"><label>Level-Up Channel</label><select id="lv-ch">${chOpts(ch,gc.level_channel)}</select></div>
+      <div class="fr"><label>Quest Channel</label><select id="lv-qch">${chOpts(ch,gc.quest_channel)}</select></div>
+    </div>
+    <button class="btn-amber" onclick="saveLev()">Save Leveling</button>
+  </div>
+  <div class="card"><div class="ct">🎭 Level Role Rewards</div>
+    <table><tr><th>Level</th><th>Role</th><th></th></tr>${lrR}</table>
+    <div style="display:flex;gap:8px;margin-top:16px;align-items:flex-end">
+      <div class="fr" style="width:100px;margin:0"><label>Level</label><input type="number" id="lr-lv" placeholder="10"/></div>
+      <div class="fr" style="flex:1;margin:0"><label>Role</label><select id="lr-ro"><option value="">Select</option>${r.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join("")}</select></div>
+      <button class="btn-amber btn-sm" onclick="addLR()">Add</button>
+    </div>
+  </div>
+  <div class="card"><div class="ct">🏆 XP Leaderboard</div>
+    <table><tr><th>#</th><th>Member</th><th>Level</th><th>XP</th><th>Messages</th><th>Progress</th></tr>${lbR}</table>
+  </div>`;
+}
+
+// ── QUESTS ────────────────────────────────────────────────────────────────
+function rQuests(){
+  if(!S.gdata)return noG();
+  const qs=S.gdata.quests||[];
+  const rows=qs.map(q=>`<tr>
+    <td><b>${esc(q.name)}</b></td><td style="color:var(--muted);font-size:12px">${esc(q.description)}</td>
+    <td>${esc(q.type)}</td><td>${q.target}</td>
+    <td>${q.reward_xp?"+"+q.reward_xp+" XP":"-"}</td>
+    <td>${q.reward_text?`<span class="badge bb">Text</span>`:"-"}</td>
+    <td><span class="badge ${q.active?"bg":"br"}">${q.active?"Active":"Off"}</span></td>
+    <td style="display:flex;gap:4px">
+      <button class="btn-ghost btn-sm" onclick="tglQ('${esc(q.name)}')">${q.active?"Disable":"Enable"}</button>
+      <button class="btn-red btn-sm" onclick="delQ('${esc(q.name)}')">Delete</button>
+    </td></tr>`)
+    .join("")||`<tr><td colspan="8" style="text-align:center;color:var(--muted)">No quests yet</td></tr>`;
+  return`<div class="card"><div class="ct">📋 Quests</div>
+    <div style="overflow-x:auto"><table><tr><th>Name</th><th>Desc</th><th>Type</th><th>Target</th><th>XP</th><th>Reward</th><th>Status</th><th></th></tr>${rows}</table></div>
+  </div>
+  <div class="card"><div class="ct">➕ Create Quest</div>
+    <div class="g2">
+      <div class="fr"><label>Name</label><input id="q-n" placeholder="e.g. Chat Champion"/></div>
+      <div class="fr"><label>Type</label><select id="q-ty"><option value="send_messages">Send Messages</option><option value="reactions_given">Give Reactions</option><option value="days_active">Days Active</option></select></div>
+      <div class="fr"><label>Description</label><input id="q-dc" placeholder="e.g. Send 100 messages in server"/></div>
+      <div class="fr"><label>Target Count</label><input type="number" id="q-tg" placeholder="100" min="1"/></div>
+      <div class="fr"><label>XP Reward (0 = none)</label><input type="number" id="q-xp" value="0" min="0"/></div>
+      <div class="fr"><label>Text Reward (hidden until complete)</label><input id="q-rw" placeholder="e.g. CODE123 or leave blank"/></div>
+    </div>
+    <button class="btn-amber" onclick="createQ()">Create Quest</button>
+  </div>`;
+}
+
+// ── TICKETS ────────────────────────────────────────────────────────────────
+function rTickets(){
+  if(!S.gdata)return noG();
+  const gc=S.gdata.config,tkt=gc.ticket||{};
+  const cats=S.gdata.channels.filter(c=>c.type==="category");
+  const chs=S.gdata.channels.filter(c=>c.type==="text");
+  const rls=S.gdata.roles;
+  return`<div class="card"><div class="ct">🎫 Ticket Configuration</div>
+    <div class="g2">
+      <div class="fr"><label>Category</label><select id="tk-cat"><option value="">None</option>${cats.map(c=>`<option value="${c.id}"${tkt.category==c.id?" selected":""}>${esc(c.name)}</option>`).join("")}</select></div>
+      <div class="fr"><label>Log Channel</label><select id="tk-log">${chOpts(chs,tkt.log_channel)}</select></div>
+      <div class="fr"><label>Support Role</label><select id="tk-ro"><option value="">None</option>${rls.map(r=>`<option value="${r.id}"${tkt.support_role==r.id?" selected":""}>${esc(r.name)}</option>`).join("")}</select></div>
+      <div class="fr"><label>Max Tickets per User</label><input type="number" id="tk-mx" value="${tkt.max_tickets||1}" min="1" max="5"/></div>
+    </div>
+    <button class="btn-amber" onclick="saveTkt()">Save Ticket Settings</button>
+  </div>
+  <div class="card"><div class="ct">📊 Active Tickets</div>
+    <p style="color:var(--muted)">Open tickets: <b style="color:var(--text)">${S.gdata.active_tickets}</b></p>
+  </div>`;
+}
+
+// ── GIVEAWAYS ────────────────────────────────────────────────────────────
+function rGiveaways(){
+  if(!S.gdata)return noG();
+  api("GET",`/api/guild/${S.guild}/giveaways`).then(gws=>{
+    const rows=(gws||[]).map(gw=>{
+      const ends=new Date(gw.ends_ts*1000).toLocaleString();
+      return`<tr><td><b>${esc(gw.prize)}</b></td><td>${gw.winner_count}</td>
+      <td>${(gw.entries||[]).length}</td><td style="font-size:12px">${ends}</td>
+      <td><span class="badge bg">Active</span></td>
+      <td><button class="btn-red btn-sm" onclick="endGW('${gw.message_id}')">End Now</button></td></tr>`;
+    }).join("")||`<tr><td colspan="6" style="text-align:center;color:var(--muted)">No active giveaways</td></tr>`;
+    document.getElementById("content").innerHTML=`<div class="card"><div class="ct">🎊 Active Giveaways</div>
+      <table><tr><th>Prize</th><th>Winners</th><th>Entries</th><th>Ends</th><th>Status</th><th></th></tr>${rows}</table>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px">Create giveaways using <code style="color:var(--amber)">/giveaway start</code> in Discord.</p>
+    </div>`;
+  }).catch(()=>{});
+  return`<div class="loading"><div class="spinner"></div>Loading giveaways...</div>`;
+}
+
+// ── BROADCAST ────────────────────────────────────────────────────────────
+function rBroadcast(){return`<div class="card"><div class="ct">📢 Broadcast to All Servers</div>
+  <p style="color:var(--muted);font-size:13px;margin-bottom:16px">Send a message to all servers via their configured main channel.</p>
+  <div class="fr"><label>Title</label><input id="bc-t" value="📢 Announcement"/></div>
+  <div class="fr"><label>Message</label><textarea id="bc-m" placeholder="Your broadcast message..."></textarea></div>
+  <button class="btn-amber" style="margin-top:8px" onclick="broadcast()">📢 Send Broadcast</button>
+  <div id="bc-r" style="margin-top:12px;font-size:13px"></div>
+</div>`;}
+
+// ── SETTINGS ─────────────────────────────────────────────────────────────
+function rSettings(){
+  const pm=S.pm||{};
+  return`<div class="g2">
+    <div class="card"><div class="ct">🖼️ Bot Avatars</div>
+      <div class="fr"><label>Default Avatar URL</label><input id="av-d" value="${esc(pm.avatar_default||'')}" placeholder="Shown when no premium servers"/></div>
+      <div class="fr"><label>Premium Avatar URL</label><input id="av-p" value="${esc(pm.avatar_premium||'')}" placeholder="Shown when any server has premium"/></div>
+      <p style="font-size:11px;color:var(--muted);margin:8px 0">Avatar is global — changes all servers</p>
+      <button class="btn-amber" style="width:100%" onclick="saveAv()">Apply Avatars</button>
+    </div>
+    <div class="card"><div class="ct">🗳️ Vote Settings</div>
+      <div class="fr"><label>Discount % for voters</label><input type="number" id="vd-p" value="${pm.vote_discount||10}" min="0" max="100"/></div>
+      <div class="fr"><label>top.gg Webhook Secret</label><input type="password" id="vd-s" value="${esc(pm.topgg_webhook_secret||'')}"/></div>
+      <button class="btn-amber" style="width:100%;margin-top:12px" onclick="saveVote()">Save</button>
+    </div>
+  </div>
+  <div class="card"><div class="ct">ℹ️ Connection Info</div>
+    <p style="font-size:13px;color:var(--muted)">API: <code style="color:var(--amber)">${URL_BASE}</code></p>
+    <p style="font-size:13px;color:var(--muted);margin-top:6px">Vote webhook: <code style="color:var(--amber)">${URL_BASE}/topgg/vote</code></p>
+  </div>`;
+}
+
+// ── ACTIONS ───────────────────────────────────────────────────────────────
+async function addPkg(){
+  const n=v("pk-n"),d=v("pk-d"),t=v("pk-t"),p=v("pk-p");
+  if(!n||!d||!p){toast("error","Fill all fields");return;}
+  await api("POST","/api/premium/packages",{action:"add",name:n,duration:d,type:t,price:p});
+  toast("success","Package added!"); S.pm=await api("GET","/api/premium"); render("premium");
+}
+async function rmPkg(name){if(!confirm(`Remove "${name}"?`))return;
+  await api("POST","/api/premium/packages",{action:"remove",name});
+  toast("success","Removed"); S.pm=await api("GET","/api/premium"); render("premium");
+}
+async function actGuild(){
+  const id=v("act-gid");if(!id){toast("error","Enter guild ID");return;}
+  await api("POST","/api/premium/guilds",{action:"activate",guild_id:id});
+  toast("success","Activated! Nickname updated."); S.pm=await api("GET","/api/premium"); render("premium");
+}
+async function deactGuild(id,name){if(!confirm(`Deactivate "${name}"?`))return;
+  await api("POST","/api/premium/guilds",{action:"deactivate",guild_id:id});
+  toast("success","Deactivated"); S.pm=await api("GET","/api/premium"); render("premium");
+}
+async function addUser(){
+  const uid=v("pu-id");if(!uid){toast("error","Enter user ID");return;}
+  await api("POST","/api/premium/users",{action:"add",user_id:uid});
+  toast("success","User added!"); S.pm=await api("GET","/api/premium"); render("premium");
+}
+async function rmUser(uid){
+  await api("POST","/api/premium/users",{action:"remove",user_id:uid});
+  toast("success","Removed"); S.pm=await api("GET","/api/premium"); render("premium");
+}
+async function lkCmd(){
+  const name=v("lk-cmd");if(!name){toast("error","Enter command name");return;}
+  await api("POST","/api/premium/commands",{action:"lock",name});
+  toast("success",`/${name} locked! Labels syncing...`); S.pm=await api("GET","/api/premium"); render("premium");
+}
+async function unlkCmd(name){
+  await api("POST","/api/premium/commands",{action:"unlock",name});
+  toast("success","Unlocked"); S.pm=await api("GET","/api/premium"); render("premium");
+}
+async function savePay(type){
+  let d={};
+  if(type==="qris")d={qris:{enabled:document.getElementById("q-en").checked,image_url:v("q-url"),info:v("q-info")}};
+  else if(type==="bank")d={bank:{enabled:document.getElementById("b-en").checked,bank_name:v("b-nm"),account_number:v("b-no"),account_name:v("b-an")}};
+  else d={ewallet:{enabled:document.getElementById("e-en").checked,type:v("e-ty"),number:v("e-nm")}};
+  const cur=(S.pm||{}).payment_methods||{};
+  await api("POST","/api/config",{payment_methods:{...cur,...d}});
+  toast("success","Saved!"); S.pm=await api("GET","/api/premium");
+}
+async function saveLev(){
+  const gid=S.guild;if(!gid)return;
+  await api("POST",`/api/guild/${gid}`,{
+    leveling_enabled:document.getElementById("lv-en").checked,
+    xp_cooldown:parseInt(v("lv-cd")||60),
+    xp_per_message:[parseInt(v("lv-xn")||15),parseInt(v("lv-xx")||25)],
+    level_channel:v("lv-ch"),quest_channel:v("lv-qch"),
+  });
+  toast("success","Saved!"); S.gdata=await api("GET",`/api/guild/${gid}`);
+}
+async function addLR(){
+  const gid=S.guild,lv=v("lr-lv"),rid=v("lr-ro");
+  if(!lv||!rid){toast("error","Fill level and role");return;}
+  const cur={...S.gdata.config.level_roles}; cur[lv]=rid;
+  await api("POST",`/api/guild/${gid}`,{level_roles:cur});
+  toast("success","Added!"); S.gdata=await api("GET",`/api/guild/${gid}`); render("leveling");
+}
+async function rmLR(lv){
+  const gid=S.guild,cur={...S.gdata.config.level_roles}; delete cur[lv];
+  await api("POST",`/api/guild/${gid}`,{level_roles:cur});
+  toast("success","Removed"); S.gdata=await api("GET",`/api/guild/${gid}`); render("leveling");
+}
+async function createQ(){
+  const gid=S.guild;if(!gid)return;
+  const n=v("q-n"),tg=parseInt(v("q-tg")||0);
+  if(!n||!tg){toast("error","Name and target required");return;}
+  await api("POST",`/api/guild/${gid}/quest`,{action:"create",name:n,description:v("q-dc"),type:v("q-ty"),target:tg,reward_xp:parseInt(v("q-xp")||0),reward_text:v("q-rw")});
+  toast("success","Quest created!"); S.gdata=await api("GET",`/api/guild/${gid}`); render("quests");
+}
+async function delQ(name){if(!confirm(`Delete "${name}"?`))return;
+  const gid=S.guild;
+  await api("POST",`/api/guild/${gid}/quest`,{action:"delete",name});
+  toast("success","Deleted"); S.gdata=await api("GET",`/api/guild/${gid}`); render("quests");
+}
+async function tglQ(name){
+  const gid=S.guild;
+  await api("POST",`/api/guild/${gid}/quest`,{action:"toggle",name});
+  toast("info","Toggled"); S.gdata=await api("GET",`/api/guild/${gid}`); render("quests");
+}
+async function saveTkt(){
+  const gid=S.guild;if(!gid)return;
+  await api("POST",`/api/guild/${gid}`,{ticket:{category:v("tk-cat"),log_channel:v("tk-log"),support_role:v("tk-ro"),max_tickets:parseInt(v("tk-mx")||1)}});
+  toast("success","Saved!"); S.gdata=await api("GET",`/api/guild/${gid}`);
+}
+async function endGW(mid){if(!confirm("End giveaway now?"))return;
+  await api("POST",`/api/giveaway/${mid}/end`,{});
+  toast("success","Giveaway ended!"); render("giveaways");
+}
+async function broadcast(){
+  const msg=v("bc-m");if(!msg){toast("error","Message required");return;}
+  document.getElementById("bc-r").textContent="Sending...";
+  const r=await api("POST","/api/broadcast",{title:v("bc-t"),message:msg});
+  document.getElementById("bc-r").innerHTML=`<span style="color:var(--green)">✅ Sent to <b>${r.success}</b> servers</span>`+(r.failed?` <span style="color:var(--red)">❌ Failed: ${r.failed}</span>`:"");
+  toast("success",`Sent to ${r.success} servers!`);
+}
+async function saveAv(){
+  await api("POST","/api/config",{avatar_default:v("av-d"),avatar_premium:v("av-p")});
+  toast("success","Avatars saved!"); S.pm=await api("GET","/api/premium");
+}
+async function saveVote(){
+  await api("POST","/api/config",{vote_discount:parseInt(v("vd-p")||10),topgg_webhook_secret:v("vd-s")});
+  toast("success","Vote settings saved!"); S.pm=await api("GET","/api/premium");
+}
+
+document.getElementById("key-in").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
+document.getElementById("url-in").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
+</script>
 </body>
 </html>
