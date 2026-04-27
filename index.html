@@ -189,7 +189,7 @@ async function doLogin(){
     document.getElementById("login-screen").style.display="none";
     document.getElementById("app").style.display="flex";
     await init();
-  }catch(e){document.getElementById("lerr").style.display="block";}
+   }catch(e){const el=document.getElementById("lerr");el.style.display="block";el.textContent="❌ Error: "+e.message+". Pastikan: 1) URL pakai https:// 2) bot.py sudah diupdate di Railway 3) Railway sudah restart";}
 }
 
 function logout(){URL_BASE="";API_KEY="";location.reload();}
